@@ -39,6 +39,13 @@ class Translator:
         """
         return self.langs_dict
 
+    def detect_lang_code(self) -> str:
+        """
+        Returns the langauge code detected in the source text passed to the Translator class.
+        """
+        lang_code = single_detection(self.text, api_key='9a84cb3518b95093f719b8bf4b46359c')
+        return lang_code
+
     def detect_lang(self) -> str:
         """
         Returns the language detected in the source text passed to the Translator class.
@@ -51,7 +58,10 @@ class Translator:
         """
         Translates the source text into the target language and returns the final translated text.
         """
-        final_text = GoogleTranslator(self.source, self.target).translate(self.text)
+        if self.source =='auto':
+            final_text = GoogleTranslator(self.detect_lang_code(), self.target).translate(self.text)
+        else:
+            final_text = GoogleTranslator(self.source, self.target).translate(self.text)
         return final_text
 
 
